@@ -18,3 +18,12 @@ type Address struct {
 	CityState string
 	PostCode  int
 }
+
+type ClientData struct {
+	Name          string
+	Address       string
+	CityState     string
+	PostCode      string
+	InvoiceNumber string
+	DateOfIssue   string
+}
