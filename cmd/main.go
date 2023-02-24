@@ -10,15 +10,30 @@ import (
 var myData = []data.Data{
 	{
 		UnitName:       "2x6 Lumber - 8'",
-		PricePerUnit:   375,
+		PricePerUnit:   3.75,
 		UnitsPurchased: 220,
 	}, {
 		UnitName:       "Drywall Sheet",
-		PricePerUnit:   822,
+		PricePerUnit:   8.22,
 		UnitsPurchased: 50,
 	}, {
 		UnitName:       "Paint",
-		PricePerUnit:   1455,
+		PricePerUnit:   14.55,
+		UnitsPurchased: 3,
+	},
+	{
+		UnitName:       "Paint",
+		PricePerUnit:   14.55,
+		UnitsPurchased: 3,
+	},
+	{
+		UnitName:       "Paint",
+		PricePerUnit:   14.55,
+		UnitsPurchased: 3,
+	},
+	{
+		UnitName:       "Paint",
+		PricePerUnit:   14.55,
 		UnitsPurchased: 3,
 	},
 }
@@ -62,6 +77,7 @@ func main() {
 	// render miscellaneous assets
 	renderAssets(pdf)
 
+	// render product info
 	renderProducts(pdf)
 
 	err := pdf.OutputFileAndClose("p1.pdf")
@@ -70,47 +86,71 @@ func main() {
 	}
 }
 
+func calculateSubtotal(myData []data.Data) float64 {
+	var sum float64
+	for _, d := range myData {
+		sum += float64(d.PricePerUnit * d.UnitsPurchased)
+	}
+	return sum
+}
+
+// converts a float value into string, formatted as currency
+func currencyfy(input float64) string {
+	return fmt.Sprintf("$%.2f", input)
+}
+
+// renders all products from data structure
 func renderProducts(pdf *gofpdf.Fpdf) {
+
+	var n = 0
 	pdf.SetTextColor(64, 64, 64)
 	pdf.SetFont("times", "", 16)
 
-	pdf.Text(40, 326+40, "2x6 Lumber - 8'")
-	pdf.Text(374, 326+40, "$3.75")
-	pdf.Text(469, 326+40, "220")
-	pdf.Text(530, 326+40, "$825.00")
+	pdf.Text(40, 326+40, myData[n].UnitName)
+	pdf.Text(374, 326+40, currencyfy(myData[n].PricePerUnit))
+	pdf.Text(469, 326+40, fmt.Sprint(myData[n].UnitsPurchased))
+	pdf.Text(530, 326+40, currencyfy(myData[n].UnitsPurchased*myData[n].PricePerUnit))
 	drawLine(pdf, 340+40)
+	n++
 
-	pdf.Text(40, 326+80, "2x6 Lumber - 10'")
-	pdf.Text(374, 326+80, "$5.55")
-	pdf.Text(469, 326+80, "18")
-	pdf.Text(530, 326+80, "$99.90")
+	pdf.Text(40, 326+80, myData[n].UnitName)
+	pdf.Text(374, 326+80, currencyfy(myData[n].PricePerUnit))
+	pdf.Text(469, 326+80, fmt.Sprint(myData[n].UnitsPurchased))
+	pdf.Text(530, 326+80, currencyfy(myData[n].UnitsPurchased*myData[n].PricePerUnit))
 	drawLine(pdf, 340+80)
+	n++
 
-	pdf.Text(40, 326+120, "2x4 Lumber - 8'")
-	pdf.Text(374, 326+120, "$2.99")
-	pdf.Text(469, 326+120, "80")
-	pdf.Text(530, 326+120, "$239.20")
+	pdf.Text(40, 326+120, myData[n].UnitName)
+	pdf.Text(374, 326+120, currencyfy(myData[n].PricePerUnit))
+	pdf.Text(469, 326+120, fmt.Sprint(myData[n].UnitsPurchased))
+	pdf.Text(530, 326+120, currencyfy(myData[n].UnitsPurchased*myData[n].PricePerUnit))
 	drawLine(pdf, 340+120)
+	n++
 
-	pdf.Text(40, 326+160, "Drywall Sheet")
-	pdf.Text(374, 326+160, "$8.22")
-	pdf.Text(469, 326+160, "50")
-	pdf.Text(530, 326+160, "$411.00")
+	pdf.Text(40, 326+160, myData[n].UnitName)
+	pdf.Text(374, 326+160, currencyfy(myData[n].PricePerUnit))
+	pdf.Text(469, 326+160, fmt.Sprint(myData[n].UnitsPurchased))
+	pdf.Text(530, 326+160, currencyfy(myData[n].UnitsPurchased*myData[n].PricePerUnit))
 	drawLine(pdf, 340+160)
+	n++
 
-	pdf.Text(40, 326+200, "Paint")
-	pdf.Text(374, 326+200, "$14.55")
-	pdf.Text(469, 326+200, "3")
-	pdf.Text(530, 326+200, "$43.65")
+	pdf.Text(40, 326+200, myData[n].UnitName)
+	pdf.Text(374, 326+200, currencyfy(myData[n].PricePerUnit))
+	pdf.Text(469, 326+200, fmt.Sprint(myData[n].UnitsPurchased))
+	pdf.Text(530, 326+200, currencyfy(myData[n].UnitsPurchased*myData[n].PricePerUnit))
+	// pdf.CellFormat(530, 326+200, currencyfy(myData[n].UnitsPurchased*myData[n].PricePerUnit), gofpdf.BorderNone, gofpdf.LineBreakNone, "", false, 0, "")
 	drawLine(pdf, 340+200)
+	n++
 
-	pdf.Text(40, 326+240, "Paint")
-	pdf.Text(374, 326+240, "$14.55")
-	pdf.Text(469, 326+240, "3")
-	pdf.Text(530, 326+240, "$43.65")
+	pdf.Text(40, 326+240, myData[n].UnitName)
+	pdf.Text(374, 326+240, currencyfy(myData[n].PricePerUnit))
+	pdf.Text(469, 326+240, fmt.Sprint(myData[n].UnitsPurchased))
+	pdf.Text(530, 326+240, currencyfy(myData[n].UnitsPurchased*myData[n].PricePerUnit))
 	drawLine(pdf, 340+240)
+	n++
 }
 
+// draws the divider lines
 func drawLine(pdf *gofpdf.Fpdf, y float64) {
 	pdf.SetFillColor(64, 64, 64)
 	pdf.SetDrawColor(64, 64, 64)
@@ -153,7 +193,7 @@ func renderTop(pdf *gofpdf.Fpdf) {
 	pdf.SetFont("times", "", 16)
 	pdf.Text(526, 305, "Amount")
 
-	pdf.Text(523, 630, "$1838.53")
+	pdf.Text(523, 630, fmt.Sprintf("$%.2f", calculateSubtotal(myData)))
 
 	// BILLED TO
 
@@ -202,7 +242,7 @@ func renderTop(pdf *gofpdf.Fpdf) {
 	// 'invoice total' text
 	pdf.SetTextColor(102, 61, 79)
 	pdf.SetFont("times", "", 50)
-	pdf.Text(385, 200, "$1838.53")
+	pdf.Text(385, 200, fmt.Sprintf("$%.2f", calculateSubtotal(myData)))
 }
 
 // RENDER THE BANNER ON TOP

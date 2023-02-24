@@ -2,8 +2,8 @@ package data
 
 type Data struct {
 	UnitName       string
-	PricePerUnit   int
-	UnitsPurchased int
+	PricePerUnit   float64
+	UnitsPurchased float64
 }
 
 type CompanyInfo struct {
